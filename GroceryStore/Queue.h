@@ -1,4 +1,8 @@
 #pragma once
+#include <iostream>
+#include <vector>
+using namespace std;
+
 class Queue
 {
 private:
@@ -15,6 +19,13 @@ private:
 
 	queueNode* front;
 	queueNode* rear;
+	int queueCount; //current queue length (set to 0 initially)
+	int totalIdleTime; //if queueCount == 0; this is incremented
+	int totalOverTime; //increment if current time > 720 & there are people in line
+	int maxQueueLength; //if current queueCount>maxQueueLength, reset
+	int currItems; //update as customers are added/removed from queue
+	int totalItems; //running count of items purchased
+	vector<int> cartList; //running list of carts helped
 	
 public:
 	Queue();
