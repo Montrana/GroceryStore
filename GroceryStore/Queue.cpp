@@ -1,15 +1,17 @@
 #include "Queue.h"
+#include "LinkedList.h"
 
 Queue::Queue()
 {
 	front = nullptr;
 	rear = nullptr;
-	queueCount = 0; //current queue length (set to 0 initially)
-	totalIdleTime = 0; //if queueCount == 0; this is incremented
-	totalOverTime = 0; //increment if current time > 720 & there are people in line
-	maxQueueLength = 0; //if current queueCount>maxQueueLength, reset
-	currItems = 0; //update as customers are added/removed from queue
-	totalItems = 0; //running count of items purchased
+	queueData.queueCount = 0; //current queue length (set to 0 initially)
+	queueData.totalIdleTime = 0; //if queueCount == 0; this is incremented
+	queueData.totalOverTime = 0; //increment if current time > 720 & there are people in line
+	queueData.maxQueueLength = 0; //if current queueCount>maxQueueLength, reset
+	queueData.currItems = 0; //update as customers are added/removed from queue
+	queueData.totalItems = 0; //running count of items purchased
+	vector<int> cartList; //running list of carts helped
 }
 
 void Queue::enQueue(queueNodeData nodeData)
@@ -26,12 +28,12 @@ void Queue::enQueue(queueNodeData nodeData)
 		rear->nextPtr = tempNode;
 		rear = tempNode;
 	}
-	queueCount++;
+	queueData.queueCount++;
 	//currItems += data.itemCount (from linked list), waiting on team to finalize cart tracking
 	//add cartID to cartList
 }
 
-Queue::queueNodeData Queue::deQueue()
+queueNodeData Queue::deQueue()
 {
 	queueNodeData data;
 	if (front == nullptr) {
@@ -54,12 +56,12 @@ Queue::queueNodeData Queue::deQueue()
 	delete temp;
 
 	// Update the queue count and current item count
-	queueCount--;
+	queueData.queueCount--;
 	//currItems -= data.itemCount (from linked list), waiting on team to finalize cart tracking
 	return data;
 }
 
-Queue::queueNodeData Queue::peek()
+queueNodeData Queue::peek()
 {
 	return front->data;
 }
@@ -74,11 +76,11 @@ bool Queue::queueEmpty()
 
 void Queue::printQueue()
 {
-	cout << "Queue Count: " << queueCount << endl;
-	cout << "Idle Time: " << totalIdleTime << endl;
-	cout << "Overtime: " << totalOverTime << endl;
-	cout << "Max Queue Length: " << maxQueueLength << endl;
-	cout << "Current Items: " << currItems << endl;
-	cout << "Total Items: " << totalItems << endl;
+	cout << "Queue Count: " << queueData.queueCount << endl;
+	cout << "Idle Time: " << queueData.totalIdleTime << endl;
+	cout << "Overtime: " << queueData.totalOverTime << endl;
+	cout << "Max Queue Length: " << queueData.maxQueueLength << endl;
+	cout << "Current Items: " << queueData.currItems << endl;
+	cout << "Total Items: " << queueData.totalItems << endl;
 	cout << "Exit Time: " << vector<int> cartList << endl;
 }
