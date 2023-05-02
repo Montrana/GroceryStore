@@ -57,7 +57,7 @@ void LinkedList::addElement(int id, int count, int enterTime, int exitTime)
 /// Looks at the last element of the list and returns it's data
 /// </summary>
 /// <returns>the data of the last item</returns>
-LinkedList::listType LinkedList::peekBack()
+listType LinkedList::peekBack()
 {
 	return tailPtr->data;
 }
@@ -66,7 +66,7 @@ LinkedList::listType LinkedList::peekBack()
 /// </summary>
 /// <param name="id">the ID that will be compared with each cart ID</param>
 /// <returns>the data of the node</returns>
-LinkedList::listType LinkedList::peek(int id)
+listType LinkedList::peek(int id)
 {
 	Node* tempNode = headPtr;
 	while (tempNode != nullptr && tempNode->nextPtr != nullptr) {
