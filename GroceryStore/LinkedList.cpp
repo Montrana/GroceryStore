@@ -13,10 +13,13 @@ LinkedList::LinkedList()
 /// Linked list contstructor override, sets first node to node T
 /// </summary>
 /// <param name="t">The data that is used to initialize the list</param>
-LinkedList::LinkedList(listType t)
+LinkedList::LinkedList(int id, int count, int enterTime, int exitTime)
 {
 	Node* tempPtr = new Node;
-	tempPtr->data = t;
+	tempPtr->data.cartId = id;
+	tempPtr->data.itemCount = count;
+	tempPtr->data.enterQTime = enterTime;
+	tempPtr->data.exitQTime = exitTime;
 	tempPtr->nextPtr = nullptr;
 	headPtr = tempPtr;
 	tailPtr = tempPtr;
@@ -26,11 +29,17 @@ LinkedList::LinkedList(listType t)
 /// <summary>
 /// Adds an element to the end of the list, would probably want to sort this by exit time
 /// </summary>
-/// <param name="type">the data that is added</param>
-void LinkedList::addElement(listType type)
+/// <param name="id">The ID of the cart</param>
+/// <param name="count">the number of items</param>
+/// <param name="enterTime">the time they entered the store</param>
+/// <param name="exitTime">the time they'll exit the primary part of the store and enter the queue</param>
+void LinkedList::addElement(int id, int count, int enterTime, int exitTime)
 {
 	Node* tempNode = new Node;
-	tempNode->data = type;
+	tempNode->data.cartId = id;
+	tempNode->data.itemCount = count;
+	tempNode->data.enterQTime = enterTime;
+	tempNode->data.exitQTime = exitTime;
 	tempNode->nextPtr = nullptr;
 	if (headPtr == nullptr)
 	{

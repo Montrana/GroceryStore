@@ -19,9 +19,9 @@ private:
 	static int count;
 public:
 	LinkedList();
-	LinkedList(listType t);
+	LinkedList(int id, int count, int enterTime, int exitTime);
 
-	void addElement(listType type);
+	void addElement(int id, int count, int enterTime, int exitTime);
 	listType peekBack();
 	listType peek(int id);
 	void delLastElement();
