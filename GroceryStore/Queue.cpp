@@ -14,8 +14,9 @@ Queue::Queue()
 	vector<int> cartList; //running list of carts helped
 }
 
-void Queue::enQueue(queueNodeData nodeData)
+void Queue::enQueue(queueNodeData nodeData, int cartId)
 {
+	queueData.cartList.push_back(cartId);
 	queueNode* tempNode = new queueNode;
 	tempNode->data = nodeData;
 	tempNode->nextPtr = nullptr;
@@ -82,5 +83,8 @@ void Queue::printQueue()
 	cout << "Max Queue Length: " << queueData.maxQueueLength << endl;
 	cout << "Current Items: " << queueData.currItems << endl;
 	cout << "Total Items: " << queueData.totalItems << endl;
-	cout << "Exit Time: " << vector<int> cartList << endl;
+	cout << "Carts Helped: ";
+	for (int id : queueData.cartList) {
+		cout << id << " ";
+	}
 }
