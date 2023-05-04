@@ -29,7 +29,7 @@ void Queue::enQueue(queueNodeData nodeData)
 		rear = tempNode;
 	}
 	queueData.queueCount++;
-	//currItems += data.itemCount (from linked list), waiting on team to finalize cart tracking
+	currItems += data.itemCount //(from linked list), waiting on team to finalize cart tracking
 	//add cartID to cartList
 }
 
