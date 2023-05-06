@@ -33,7 +33,7 @@ void Queue::enQueue(queueNodeData nodeData, int cartId, int itemCount)
 	if (queueData.queueCount > queueData.maxQueueLength)
 		queueData.maxQueueLength = queueData.queueCount;
 	queueData.currItems += itemCount;
-	queueData.totalItems += itemCount;*
+	queueData.totalItems += itemCount;
 }
 
 queueNodeData Queue::deQueue(int itemCount)
