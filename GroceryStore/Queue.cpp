@@ -14,7 +14,7 @@ Queue::Queue()
 	vector<int> cartList; //running list of carts helped
 }
 
-void Queue::enQueue(queueNodeData nodeData, int cartId, int & itemCount)
+void Queue::enQueue(queueNodeData nodeData, int cartId, int itemCount)
 {
 	queueData.cartList.push_back(cartId);
 	queueNode* tempNode = new queueNode;
@@ -30,11 +30,13 @@ void Queue::enQueue(queueNodeData nodeData, int cartId, int & itemCount)
 		rear = tempNode;
 	}
 	queueData.queueCount++;
+	if (queueData.queueCount > queueData.maxQueueLength)
+		queueData.maxQueueLength = queueData.queueCount;
 	queueData.currItems += itemCount;
-
+	queueData.totalItems += itemCount;*
 }
 
-queueNodeData Queue::deQueue()
+queueNodeData Queue::deQueue(int itemCount)
 {
 	queueNodeData data;
 	if (front == nullptr) {
@@ -58,7 +60,7 @@ queueNodeData Queue::deQueue()
 
 	// Update the queue count and current item count
 	queueData.queueCount--;
-	//currItems -= data.itemCount (from linked list), waiting on team to finalize cart tracking
+	queueData.currItems -= itemCount;
 	return data;
 }
 
