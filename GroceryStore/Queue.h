@@ -34,7 +34,7 @@ private:
 	queueData queueData;
 public:
 	Queue();
-	void enQueue(queueNodeData nodeData, int cartId);
+	void enQueue(queueNodeData nodeData, int cartId, int& itemCount);
 	queueNodeData deQueue();
 	queueNodeData peek();
 	bool queueEmpty();
