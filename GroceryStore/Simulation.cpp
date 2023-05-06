@@ -27,4 +27,5 @@ int timeremain(int items) {
     for (int i = 1; i <= items; i++) {
         timeRemaining += (rand() % 6 + 5) / 10.0;
     }
+    return timeRemaining;
 }
