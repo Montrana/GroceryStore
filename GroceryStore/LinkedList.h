@@ -17,7 +17,7 @@ class LinkedList
 private:
 	Node* headPtr;
 	Node* tailPtr;
-	static int count;
+	int count;
 public:
 	LinkedList();
 	LinkedList(int id, int count, int enterTime, int exitTime);
@@ -29,6 +29,6 @@ public:
 	void delElement(int id);
 	void printList();
 	bool listIsEmpty();
-	static int listCount();
+	int listCount();
 };
 
