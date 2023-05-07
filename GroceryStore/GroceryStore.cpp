@@ -25,31 +25,29 @@ int main()
     LinkedList totalCustomersInStore;
 
     int minutes = 0;
-    while (minutes >= 0) {
+    while (!((minutes > 720) && (ischeckoutempty(allCheckoutLines)))) {
         if (minutes < 720) {
             int customers;
             srand(time(0));
             customers = (rand() % 3) + 1; //randomizing number of customers that enter in the store;
             int i = 0, k = 0;
             while (i < customers) {
-                listType cust;
-
-                //cust1
-                //cust.cartId = customerCount + 1; //original code commented out just in case
-                //cust.enterQTime = minutes; 
-                //cust.exitQTime = cust.enterQTime; 
                 int itemCount = items();
                 int timeremaining = timeremain(itemCount);
                 int enterQ = minutes + timeremaining;
                 int exitQTime = enterQ + ((itemCount * 15) / 60);
-                totalCustomersInStore.addElement(customerCount + 1, itemCount, enterQ, exitQTime); //still need to figure out exitQTime
+                totalCustomersInStore.addElement(customerCount + 1, itemCount, enterQ, exitQTime);
                 customerCount += 1;
                 int linkedcount = 1; //cartId's start at 1. This should allow us to increment peek() using cartId's. 
                 listType tempInfo; //this is so we can access the information from the linkedlist elements, and use them to check enterQ times
                 while (linkedcount <= totalCustomersInStore.listCount()) {
                     tempInfo = totalCustomersInStore.peek(linkedcount); //storing info from certain element in linked list starting with 1,2,..etc.
                     if (tempInfo.enterQTime == minutes) { //checking if customer needs to be moved to checkout line
+                        int tempCardId = tempInfo.cartId;
                         while (k < allCheckoutLines.size()) {
+                            if (allCheckoutLines[k].queueEmpty()) {
+                                allCheckoutLines[k].incrementIdleTime();
+                            }
                             queueNodeData tempQueueInfo, smallestLine = allCheckoutLines[0].peek(); //holding the current element of the queue's data and holding the data of the smallest checkout line
                             int smallestLineIndex; //holding the value of k at which the smallest line is
                             tempQueueInfo = allCheckoutLines[k].peek();
@@ -63,7 +61,7 @@ int main()
                             queueNodeData tempqueuedata; //creating a temp variable for the customer that needs to be added to a checkout line
                             tempqueuedata.timeAvailable = tempInfo.exitQTime;
                             tempqueuedata.itemCount = tempInfo.itemCount;
-                            allCheckoutLines[smallestLineIndex].enQueue(tempqueuedata); //adding them to the predetermined shortest line.
+                            allCheckoutLines[smallestLineIndex].enQueue(tempqueuedata, tempCardId); //adding them to the predetermined shortest line.
 
                             k += 1;
                         }
@@ -90,12 +88,16 @@ int main()
             cout << "Need to code overtime."; //would the code for adding people to lines just repeat here until all queues are empty?
             int overtimeminutecount;
             int linkedcount = 1; //cartId's start at 1. This should allow us to increment peek() using cartId's. 
-            listType tempInfo;
-            int k = 0;
+            listType tempInfo; //this is so we can access the information from the linkedlist elements, and use them to check enterQ times
             while (linkedcount <= totalCustomersInStore.listCount()) {
                 tempInfo = totalCustomersInStore.peek(linkedcount); //storing info from certain element in linked list starting with 1,2,..etc.
                 if (tempInfo.enterQTime == minutes) { //checking if customer needs to be moved to checkout line
+                    int tempCardId = tempInfo.cartId;
+                    int k = 0;
                     while (k < allCheckoutLines.size()) {
+                        if (allCheckoutLines[k].queueEmpty()) {
+                            allCheckoutLines[k].incrementIdleTime();
+                        }
                         queueNodeData tempQueueInfo, smallestLine = allCheckoutLines[0].peek(); //holding the current element of the queue's data and holding the data of the smallest checkout line
                         int smallestLineIndex; //holding the value of k at which the smallest line is
                         tempQueueInfo = allCheckoutLines[k].peek();
@@ -109,7 +111,7 @@ int main()
                         queueNodeData tempqueuedata; //creating a temp variable for the customer that needs to be added to a checkout line
                         tempqueuedata.timeAvailable = tempInfo.exitQTime;
                         tempqueuedata.itemCount = tempInfo.itemCount;
-                        allCheckoutLines[smallestLineIndex].enQueue(tempqueuedata); //adding them to the predetermined shortest line.
+                        allCheckoutLines[smallestLineIndex].enQueue(tempqueuedata, tempCardId); //adding them to the predetermined shortest line.
 
                         k += 1;
                     }
@@ -130,13 +132,22 @@ int main()
                 }
                 linkedcount += 1;
             }
-            //how do i add to the totalovertime??
+            for (int i = 0; i < allCheckoutLines.size(); i++) {
+                if (!allCheckoutLines[i].queueEmpty()) {
+                    allCheckoutLines[i].incrementOvertime();
+                }
+                else {
+                    continue;
+                }
+            }
         }
 
         minutes += 1;
         }
-        
-        allCheckoutLines.printQueue();//??
+        for (int i = 0; i < allCheckoutLines.size(); i++) {
+            allCheckoutLines[i].printQueue();
+
+        }
     
 }
 
