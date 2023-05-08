@@ -67,7 +67,12 @@ queueNodeData Queue::deQueue() //removes the front most customer from the queue
 
 queueNodeData Queue::peek() //shows the front constomer's data
 {
-	return front->data;
+	if (front == nullptr) {
+		queueNodeData tempData{};
+		return tempData;
+	}
+	else
+		return front->data;
 }
 
 void Queue::incrementIdleTime() //increases the queue's idle time

@@ -80,7 +80,7 @@ int main()
                             continue;
                         }
                     }
-                    linkedcount += 1;
+                    linkedcount++;
                     
                 }
                 i++;

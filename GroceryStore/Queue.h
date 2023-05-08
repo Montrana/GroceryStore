@@ -5,9 +5,9 @@ using namespace std;
 
 
 struct queueNodeData {
-	int timeAvailable; //clock time when current
+	int timeAvailable = 0; //clock time when current
 	//customer is dequeued
-	int itemCount; //the number of items for
+	int itemCount = 0; //the number of items for
 	//current customer
 };
 
