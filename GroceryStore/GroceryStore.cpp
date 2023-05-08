@@ -23,7 +23,7 @@ int main()
         allCheckoutLines.push_back(tempqueue);//trying to add the queues to one big vector so I can access them?
     }
     LinkedList totalCustomersInStore;
-
+    int linkedcount = 1;
     int minutes = 0;
     while (!(minutes > 720 && ischeckoutempty(allCheckoutLines))) {
         if (minutes < 720) {
@@ -38,7 +38,7 @@ int main()
                 int exitQTime = enterQ + ((itemCount * 15) / 60);
                 totalCustomersInStore.addElement(customerCount + 1, itemCount, enterQ, exitQTime);
                 customerCount += 1;
-                int linkedcount = 1; //cartId's start at 1. This should allow us to increment peek() using cartId's. 
+                //cartId's start at 1. This should allow us to increment peek() using cartId's. 
                 listType tempInfo; //this is so we can access the information from the linkedlist elements, and use them to check enterQ times
                 while (linkedcount <= totalCustomersInStore.listCount()) {
                     tempInfo = totalCustomersInStore.peek(linkedcount); //storing info from certain element in linked list starting with 1,2,..etc.
@@ -81,12 +81,13 @@ int main()
                         }
                     }
                     linkedcount += 1;
+                    
                 }
                 i++;
             }
         }
         else {
-            cout << "Need to code overtime."; //would the code for adding people to lines just repeat here until all queues are empty?
+            break;
             int overtimeminutecount;
             int linkedcount = 1; //cartId's start at 1. This should allow us to increment peek() using cartId's. 
             listType tempInfo; //this is so we can access the information from the linkedlist elements, and use them to check enterQ times
