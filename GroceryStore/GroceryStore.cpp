@@ -41,7 +41,14 @@ int main()
                 //cartId's start at 1. This should allow us to increment peek() using cartId's. 
                 listType tempInfo; //this is so we can access the information from the linkedlist elements, and use them to check enterQ times
                 while (linkedcount <= totalCustomersInStore.listCount()) {
-                    tempInfo = totalCustomersInStore.peek(linkedcount); //storing info from certain element in linked list starting with 1,2,..etc.
+                    try
+                    {
+                        tempInfo = totalCustomersInStore.peek(linkedcount); //storing info from certain element in linked list starting with 1,2,..etc.
+                    }
+                    catch(exception err)
+                    {
+                        cout << err.what();
+                    }
                     if (tempInfo.enterQTime == minutes) { //checking if customer needs to be moved to checkout line
                         int tempCardId = tempInfo.cartId;
                         while (k < allCheckoutLines.size()) {
@@ -87,12 +94,17 @@ int main()
             }
         }
         else {
-            break;
             int overtimeminutecount;
-            int linkedcount = 1; //cartId's start at 1. This should allow us to increment peek() using cartId's. 
             listType tempInfo; //this is so we can access the information from the linkedlist elements, and use them to check enterQ times
             while (linkedcount <= totalCustomersInStore.listCount()) {
-                tempInfo = totalCustomersInStore.peek(linkedcount); //storing info from certain element in linked list starting with 1,2,..etc.
+                try
+                {
+                    tempInfo = totalCustomersInStore.peek(linkedcount); //storing info from certain element in linked list starting with 1,2,..etc.
+                }
+                catch (exception err)
+                {
+                    cout << err.what();
+                }
                 if (tempInfo.enterQTime == minutes) { //checking if customer needs to be moved to checkout line
                     int tempCardId = tempInfo.cartId;
                     int k = 0;
@@ -143,8 +155,7 @@ int main()
                 }
             }
         }
-
-        minutes += 1;
+        minutes ++;
     }
     for (int i = 0; i < allCheckoutLines.size(); i++) {
         allCheckoutLines[i].printQueue();

@@ -59,7 +59,14 @@ void LinkedList::addElement(int id, int iCount, int enterTime, int exitTime)
 /// <returns>the data of the last item</returns>
 listType LinkedList::peekBack()
 {
-	return tailPtr->data;
+	try
+	{
+		return tailPtr->data;
+	}
+	catch(...)
+	{
+		cout << "list is empty";
+	}
 }
 /// <summary>
 /// looks at the element with the given id
@@ -69,11 +76,9 @@ listType LinkedList::peekBack()
 listType LinkedList::peek(int id)
 {
 	Node* tempNode = headPtr;
-	while (tempNode != nullptr && tempNode->nextPtr != nullptr) {
-		if (tempNode->nextPtr->data.cartId == id) {
-			Node* returnNode = tempNode->nextPtr;
-			return returnNode->data;
-			break;
+	while (tempNode != nullptr) {
+		if (tempNode->data.cartId == id) {
+			return tempNode->data;
 		}
 		tempNode = tempNode->nextPtr;
 	}
@@ -85,18 +90,24 @@ listType LinkedList::peek(int id)
 void LinkedList::delLastElement()
 {
 	Node* tempNode = headPtr;
-	while (tempNode != nullptr && tempNode->nextPtr != nullptr) {
+	while (tempNode != nullptr) {
 		if (tempNode->nextPtr->data.cartId == tailPtr->data.cartId) {
 			Node* delNode = tempNode->nextPtr;
 			tempNode->nextPtr = tempNode->nextPtr->nextPtr;
 			delete delNode;
 			delNode = nullptr;
 			count--;
+			tailPtr = tempNode;
+			break;
+		}
+		else if (tempNode->data.cartId == tailPtr->data.cartId)
+		{
 			if (headPtr == tempNode)
 			{
 				delete headPtr;
 				headPtr = nullptr;
 				tailPtr = nullptr;
+				tempNode = nullptr;
 			}
 			break;
 		}
@@ -109,27 +120,44 @@ void LinkedList::delLastElement()
 /// <param name="id">the id to delete</param>
 void LinkedList::delElement(int id)
 {
-	Node* tempNode = headPtr;
-	while (tempNode != nullptr && tempNode->nextPtr != nullptr) {
-		if (tempNode->nextPtr->data.cartId == id) {
-			if (tempNode == headPtr)
-			{
-				headPtr = tempNode->nextPtr;
-			}
-			if (tempNode->nextPtr == tailPtr)
-			{
-				tailPtr = tempNode;
-			}
-			Node* delNode = tempNode->nextPtr;
-			tempNode->nextPtr = tempNode->nextPtr->nextPtr;
-			delete delNode;
-			delNode = nullptr;
-			count--;
-			break;
-		}
-		tempNode = tempNode->nextPtr;
+	
+	if (headPtr->data.cartId == id && tailPtr->data.cartId == id)
+	{
+		delete headPtr;
+		headPtr = nullptr;
+		tailPtr = nullptr;
 	}
-	throw runtime_error("Could not find ID: " + id);
+	else if (headPtr->data.cartId == id)
+	{
+		Node* tempNode = headPtr->nextPtr;
+		delete headPtr;
+		headPtr = tempNode;
+	}
+	else
+	{
+		Node* tempNode = headPtr;
+		while (tempNode != nullptr) {
+			if (tempNode->nextPtr->data.cartId == id) {
+				if (tempNode == headPtr)
+				{
+					headPtr = tempNode->nextPtr;
+				}
+				if (tempNode->nextPtr == tailPtr)
+				{
+					tailPtr = tempNode;
+				}
+				Node* delNode = tempNode->nextPtr;
+				tempNode->nextPtr = tempNode->nextPtr->nextPtr;
+				delete delNode;
+				delNode = nullptr;
+				count--;
+				return;
+				break;
+			}
+			tempNode = tempNode->nextPtr;
+		}
+		throw runtime_error("Could not find ID: " + id);
+	}
 }
 
 /// <summary>
