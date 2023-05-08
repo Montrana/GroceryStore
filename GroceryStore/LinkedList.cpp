@@ -13,10 +13,13 @@ LinkedList::LinkedList()
 /// Linked list contstructor override, sets first node to node T
 /// </summary>
 /// <param name="t">The data that is used to initialize the list</param>
-LinkedList::LinkedList(listType t)
+LinkedList::LinkedList(int id, int iCount, int enterTime, int exitTime)
 {
 	Node* tempPtr = new Node;
-	tempPtr->data = t;
+	tempPtr->data.cartId = id;
+	tempPtr->data.itemCount = iCount;
+	tempPtr->data.enterQTime = enterTime;
+	tempPtr->data.exitQTime = exitTime;
 	tempPtr->nextPtr = nullptr;
 	headPtr = tempPtr;
 	tailPtr = tempPtr;
@@ -26,11 +29,17 @@ LinkedList::LinkedList(listType t)
 /// <summary>
 /// Adds an element to the end of the list, would probably want to sort this by exit time
 /// </summary>
-/// <param name="type">the data that is added</param>
-void LinkedList::addElement(listType type)
+/// <param name="id">The ID of the cart</param>
+/// <param name="count">the number of items</param>
+/// <param name="enterTime">the time they entered the store</param>
+/// <param name="exitTime">the time they'll exit the primary part of the store and enter the queue</param>
+void LinkedList::addElement(int id, int iCount, int enterTime, int exitTime)
 {
 	Node* tempNode = new Node;
-	tempNode->data = type;
+	tempNode->data.cartId = id;
+	tempNode->data.itemCount = iCount;
+	tempNode->data.enterQTime = enterTime;
+	tempNode->data.exitQTime = exitTime;
 	tempNode->nextPtr = nullptr;
 	if (headPtr == nullptr)
 	{
@@ -48,7 +57,7 @@ void LinkedList::addElement(listType type)
 /// Looks at the last element of the list and returns it's data
 /// </summary>
 /// <returns>the data of the last item</returns>
-LinkedList::listType LinkedList::peekBack()
+listType LinkedList::peekBack()
 {
 	return tailPtr->data;
 }
@@ -57,7 +66,7 @@ LinkedList::listType LinkedList::peekBack()
 /// </summary>
 /// <param name="id">the ID that will be compared with each cart ID</param>
 /// <returns>the data of the node</returns>
-LinkedList::listType LinkedList::peek(int id)
+listType LinkedList::peek(int id)
 {
 	Node* tempNode = headPtr;
 	while (tempNode != nullptr && tempNode->nextPtr != nullptr) {

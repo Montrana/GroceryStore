@@ -14,8 +14,10 @@ Queue::Queue()
 	vector<int> cartList; //running list of carts helped
 }
 
-void Queue::enQueue(queueNodeData nodeData)
+
+void Queue::enQueue(queueNodeData nodeData, int cartId)
 {
+	queueData.cartList.push_back(cartId);
 	queueNode* tempNode = new queueNode;
 	tempNode->data = nodeData;
 	tempNode->nextPtr = nullptr;
@@ -29,13 +31,15 @@ void Queue::enQueue(queueNodeData nodeData)
 		rear = tempNode;
 	}
 	queueData.queueCount++;
-	//currItems += data.itemCount //(from linked list), waiting on team to finalize cart tracking
-	//add cartID to cartList
+	if (queueData.queueCount > queueData.maxQueueLength)
+		queueData.maxQueueLength = queueData.queueCount;
+	queueData.currItems += nodeData.itemCount;
+	queueData.totalItems += nodeData.itemCount;
 }
 
 queueNodeData Queue::deQueue()
 {
-	queueNodeData data;
+	queueNodeData data{};
 	if (front == nullptr) {
 		cout << "The Queue is empty" << endl;
 		return data;
@@ -57,13 +61,23 @@ queueNodeData Queue::deQueue()
 
 	// Update the queue count and current item count
 	queueData.queueCount--;
-	//currItems -= data.itemCount (from linked list), waiting on team to finalize cart tracking
+	queueData.currItems -= data.itemCount;
 	return data;
 }
 
 queueNodeData Queue::peek()
 {
 	return front->data;
+}
+
+void Queue::incrementIdleTime()
+{
+	queueData.totalIdleTime++;
+}
+
+void Queue::incrementOvertime()
+{
+	queueData.totalOverTime++;
 }
 
 bool Queue::queueEmpty()
@@ -82,5 +96,8 @@ void Queue::printQueue()
 	cout << "Max Queue Length: " << queueData.maxQueueLength << endl;
 	cout << "Current Items: " << queueData.currItems << endl;
 	cout << "Total Items: " << queueData.totalItems << endl;
-	cout << "Exit Time: " << vector<int> cartList << endl;
+	cout << "Carts Helped: ";
+	for (int id : queueData.cartList) {
+		cout << id << " ";
+	}
 }

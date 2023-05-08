@@ -1,5 +1,7 @@
 #include "Simulation.h"
 #include "LinkedList.h"
+#include "Queue.h"
+#include <vector>
 
 
 int items() {
@@ -28,4 +30,13 @@ int timeremain(int items) {
         timeRemaining += (rand() % 6 + 5) / 10.0;
     }
     return timeRemaining;
+}
+
+bool ischeckoutempty(vector<Queue> checkoutlines) {
+    for (int i = 0; i < checkoutlines.size(); i++) {
+        if (!checkoutlines[i].queueEmpty()) {
+            return false;
+        }
+    }
+    return true;
 }
