@@ -77,10 +77,17 @@ listType LinkedList::peek(int id)
 {
 	Node* tempNode = headPtr;
 	while (tempNode != nullptr) {
-		if (tempNode->data.cartId == id) {
-			return tempNode->data;
+		try
+		{
+			if (tempNode->data.cartId == id) {
+				return tempNode->data;
+			}
+			tempNode = tempNode->nextPtr;
 		}
-		tempNode = tempNode->nextPtr;
+		catch (...)
+		{
+			cout << "we ran into an issue lol.";
+		}
 	}
 	throw runtime_error("Could not find ID: " + id);
 }

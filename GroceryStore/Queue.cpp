@@ -104,4 +104,5 @@ void Queue::printQueue() //shows the queue's information
 	for (int id : queueData.cartList) {
 		cout << id << " ";
 	}
+	cout << endl;
 }
