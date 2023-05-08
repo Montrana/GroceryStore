@@ -24,27 +24,29 @@ int main()
         allCheckoutLines.push_back(tempqueue);//trying to add the queues to one big vector so I can access them?
     }
     LinkedList totalCustomersInStore;
-    int linkedcount = 1;
+    vector<int> cartIdsInStore;
     int minutes = 0;
     while (!(minutes > 720 && ischeckoutempty(allCheckoutLines))) {
         if (minutes < 720) {
             int customers;
             
             customers = (rand() % 3) + 1; //randomizing number of customers that enter in the store;
-            int i = 0, k = 0;
+            int i = 0;
             while (i < customers) {
                 int itemCount = items();
                 int timeremaining = timeremain(itemCount);
                 int enterQ = minutes + timeremaining;
                 int exitQTime = enterQ + ((itemCount * 15) / 60);
                 totalCustomersInStore.addElement(customerCount + 1, itemCount, enterQ, exitQTime);
+                cartIdsInStore.push_back(customerCount + 1);
                 customerCount++;
                 //cartId's start at 1. This should allow us to increment peek() using cartId's. 
                 listType tempInfo; //this is so we can access the information from the linkedlist elements, and use them to check enterQ times
-                while (linkedcount <= totalCustomersInStore.listCount()) {
+                //while (linkedcount <= totalCustomersInStore.listCount()) 
+                for(int j = 0; j < cartIdsInStore.size(); j++){
                     try
                     {
-                        tempInfo = totalCustomersInStore.peek(linkedcount); //storing info from certain element in linked list starting with 1,2,..etc.
+                        tempInfo = totalCustomersInStore.peek(cartIdsInStore[j]); //storing info from certain element in linked list starting with 1,2,..etc.
                     }
                     catch(exception err)
                     {
@@ -52,13 +54,11 @@ int main()
                     }
                     if (tempInfo.enterQTime == minutes) { //checking if customer needs to be moved to checkout line
                         int tempCardId = tempInfo.cartId;
-                        k = 0;
+                        int k = 0;
                         queueNodeData tempQueueInfo, smallestLine = allCheckoutLines[k].peek(); //holding the current element of the queue's data and holding the data of the smallest checkout line
                         int smallestLineIndex = 0; //holding the value of k at which the smallest line is
                         while (k < allCheckoutLines.size()) {
-                            if (allCheckoutLines[k].queueEmpty()) {
-                                allCheckoutLines[k].incrementIdleTime();
-                            }
+                            
                             tempQueueInfo = allCheckoutLines[k].peek();
                             if (tempQueueInfo.itemCount < smallestLine.itemCount) {
                                 smallestLine = tempQueueInfo;
@@ -86,19 +86,23 @@ int main()
                             }
                         }
                     }
-                    linkedcount++;
                     
                 }
                 i++;
             }
+            for (int c = 0; c < allCheckoutLines.size(); c++)
+            {
+                if (allCheckoutLines[c].queueEmpty()) {
+                    allCheckoutLines[c].incrementIdleTime();
+                }
+            }
         }
         else {
-            int overtimeminutecount;
             listType tempInfo; //this is so we can access the information from the linkedlist elements, and use them to check enterQ times
-            while (linkedcount <= totalCustomersInStore.listCount()) {
+            for (int j = 0; j < cartIdsInStore.size(); j++) {
                 try
                 {
-                    tempInfo = totalCustomersInStore.peek(linkedcount); //storing info from certain element in linked list starting with 1,2,..etc.
+                    tempInfo = totalCustomersInStore.peek(cartIdsInStore[j]); //storing info from certain element in linked list starting with 1,2,..etc.
                 }
                 catch (exception err)
                 {
@@ -110,9 +114,7 @@ int main()
                     queueNodeData tempQueueInfo, smallestLine = allCheckoutLines[k].peek(); //holding the current element of the queue's data and holding the data of the smallest checkout line
                     int smallestLineIndex = 0; //holding the value of k at which the smallest line is
                     while (k < allCheckoutLines.size()) {
-                        if (allCheckoutLines[k].queueEmpty()) {
-                            allCheckoutLines[k].incrementIdleTime();
-                        }
+
                         tempQueueInfo = allCheckoutLines[k].peek();
                         if (tempQueueInfo.itemCount < smallestLine.itemCount) {
                             smallestLine = tempQueueInfo;
@@ -123,7 +125,7 @@ int main()
                         tempqueuedata.itemCount = tempInfo.itemCount;
                         allCheckoutLines[smallestLineIndex].enQueue(tempqueuedata, tempCardId); //adding them to the predetermined shortest line.
 
-                        k += 1;
+                        k++;
                     }
                 }
                 //for loop through the main vector to check exitQTimes, making sure to hold data in a tempVar using peek to access info
@@ -140,7 +142,7 @@ int main()
                         }
                     }
                 }
-                linkedcount += 1;
+
             }
             for (int i = 0; i < allCheckoutLines.size(); i++) {
                 if (!allCheckoutLines[i].queueEmpty()) {
