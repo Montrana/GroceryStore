@@ -13,11 +13,11 @@ LinkedList::LinkedList()
 /// Linked list contstructor override, sets first node to node T
 /// </summary>
 /// <param name="t">The data that is used to initialize the list</param>
-LinkedList::LinkedList(int id, int count, int enterTime, int exitTime)
+LinkedList::LinkedList(int id, int iCount, int enterTime, int exitTime)
 {
 	Node* tempPtr = new Node;
 	tempPtr->data.cartId = id;
-	tempPtr->data.itemCount = count;
+	tempPtr->data.itemCount = iCount;
 	tempPtr->data.enterQTime = enterTime;
 	tempPtr->data.exitQTime = exitTime;
 	tempPtr->nextPtr = nullptr;
@@ -33,11 +33,11 @@ LinkedList::LinkedList(int id, int count, int enterTime, int exitTime)
 /// <param name="count">the number of items</param>
 /// <param name="enterTime">the time they entered the store</param>
 /// <param name="exitTime">the time they'll exit the primary part of the store and enter the queue</param>
-void LinkedList::addElement(int id, int count, int enterTime, int exitTime)
+void LinkedList::addElement(int id, int iCount, int enterTime, int exitTime)
 {
 	Node* tempNode = new Node;
 	tempNode->data.cartId = id;
-	tempNode->data.itemCount = count;
+	tempNode->data.itemCount = iCount;
 	tempNode->data.enterQTime = enterTime;
 	tempNode->data.exitQTime = exitTime;
 	tempNode->nextPtr = nullptr;

@@ -25,7 +25,7 @@ int main()
     LinkedList totalCustomersInStore;
 
     int minutes = 0;
-    while (!((minutes > 720) && (ischeckoutempty(allCheckoutLines)))) {
+    while (!(minutes > 720 && ischeckoutempty(allCheckoutLines))) {
         if (minutes < 720) {
             int customers;
             srand(time(0));
@@ -82,6 +82,7 @@ int main()
                     }
                     linkedcount += 1;
                 }
+                i++;
             }
         }
         else {
@@ -143,12 +144,10 @@ int main()
         }
 
         minutes += 1;
-        }
-        for (int i = 0; i < allCheckoutLines.size(); i++) {
-            allCheckoutLines[i].printQueue();
-
-        }
-    
+    }
+    for (int i = 0; i < allCheckoutLines.size(); i++) {
+        allCheckoutLines[i].printQueue();
+    }
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
