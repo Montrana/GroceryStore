@@ -15,7 +15,7 @@ Queue::Queue()
 }
 
 
-void Queue::enQueue(queueNodeData nodeData, int cartId)
+void Queue::enQueue(queueNodeData nodeData, int cartId) //adds an assembled customer to the back of the queue, and adds the cart ID to the list of carts helped
 {
 	queueData.cartList.push_back(cartId);
 	queueNode* tempNode = new queueNode;
@@ -37,7 +37,7 @@ void Queue::enQueue(queueNodeData nodeData, int cartId)
 	queueData.totalItems += nodeData.itemCount;
 }
 
-queueNodeData Queue::deQueue()
+queueNodeData Queue::deQueue() //removes the front most customer from the queue
 {
 	queueNodeData data{};
 	if (front == nullptr) {
@@ -65,22 +65,22 @@ queueNodeData Queue::deQueue()
 	return data;
 }
 
-queueNodeData Queue::peek()
+queueNodeData Queue::peek() //shows the front constomer's data
 {
 	return front->data;
 }
 
-void Queue::incrementIdleTime()
+void Queue::incrementIdleTime() //increases the queue's idle time
 {
 	queueData.totalIdleTime++;
 }
 
-void Queue::incrementOvertime()
+void Queue::incrementOvertime() //increases the queue's overtime
 {
 	queueData.totalOverTime++;
 }
 
-bool Queue::queueEmpty()
+bool Queue::queueEmpty() //checks if the queue is empty and returns true if so, otherwise false
 {
 	if (front == nullptr)
 		return true;
@@ -88,7 +88,7 @@ bool Queue::queueEmpty()
 		return false;
 }
 
-void Queue::printQueue()
+void Queue::printQueue() //shows the queue's information
 {
 	cout << "Queue Count: " << queueData.queueCount << endl;
 	cout << "Idle Time: " << queueData.totalIdleTime << endl;
