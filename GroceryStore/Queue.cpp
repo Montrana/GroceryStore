@@ -41,8 +41,7 @@ queueNodeData Queue::deQueue() //removes the front most customer from the queue
 {
 	queueNodeData data{};
 	if (front == nullptr) {
-		cout << "The Queue is empty" << endl;
-		return data;
+		throw runtime_error("Queue is empty");
 	}
 	// Store the data of the front node
 	data = front->data;

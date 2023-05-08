@@ -12,6 +12,7 @@ using namespace std;
 
 int main()
 {
+    srand(time(0));
     int checkoutLines, customerCount = 0;
     cout << "Enter the amount of checkout lines (amount 1-10): " << endl;
     cin >> checkoutLines;
@@ -28,7 +29,7 @@ int main()
     while (!(minutes > 720 && ischeckoutempty(allCheckoutLines))) {
         if (minutes < 720) {
             int customers;
-            srand(time(0));
+            
             customers = (rand() % 3) + 1; //randomizing number of customers that enter in the store;
             int i = 0, k = 0;
             while (i < customers) {
@@ -37,7 +38,7 @@ int main()
                 int enterQ = minutes + timeremaining;
                 int exitQTime = enterQ + ((itemCount * 15) / 60);
                 totalCustomersInStore.addElement(customerCount + 1, itemCount, enterQ, exitQTime);
-                customerCount += 1;
+                customerCount++;
                 //cartId's start at 1. This should allow us to increment peek() using cartId's. 
                 listType tempInfo; //this is so we can access the information from the linkedlist elements, and use them to check enterQ times
                 while (linkedcount <= totalCustomersInStore.listCount()) {
@@ -51,40 +52,38 @@ int main()
                     }
                     if (tempInfo.enterQTime == minutes) { //checking if customer needs to be moved to checkout line
                         int tempCardId = tempInfo.cartId;
+                        k = 0;
+                        queueNodeData tempQueueInfo, smallestLine = allCheckoutLines[k].peek(); //holding the current element of the queue's data and holding the data of the smallest checkout line
+                        int smallestLineIndex = 0; //holding the value of k at which the smallest line is
                         while (k < allCheckoutLines.size()) {
                             if (allCheckoutLines[k].queueEmpty()) {
                                 allCheckoutLines[k].incrementIdleTime();
                             }
-                            queueNodeData tempQueueInfo, smallestLine = allCheckoutLines[0].peek(); //holding the current element of the queue's data and holding the data of the smallest checkout line
-                            int smallestLineIndex; //holding the value of k at which the smallest line is
                             tempQueueInfo = allCheckoutLines[k].peek();
                             if (tempQueueInfo.itemCount < smallestLine.itemCount) {
                                 smallestLine = tempQueueInfo;
                                 smallestLineIndex = k;
-                            }
-                            else {
-                                continue;
                             }
                             queueNodeData tempqueuedata; //creating a temp variable for the customer that needs to be added to a checkout line
                             tempqueuedata.timeAvailable = tempInfo.exitQTime;
                             tempqueuedata.itemCount = tempInfo.itemCount;
                             allCheckoutLines[smallestLineIndex].enQueue(tempqueuedata, tempCardId); //adding them to the predetermined shortest line.
 
-                            k += 1;
+                            k++;
                         }
-                    }
-                    else {
-                        continue;
                     }
                     //for loop through the main vector to check exitQTimes, making sure to hold data in a tempVar using peek to access info
                     queueNodeData tempVar; //holding data from checkoutlines
                     for (int i = 0; i < allCheckoutLines.size(); i++) {
                         tempVar = allCheckoutLines[i].peek();
-                        if (tempVar.timeAvailable == 0) {
-                            allCheckoutLines[i].deQueue();
-                        }
-                        else {
-                            continue;
+                        if (tempVar.timeAvailable == 0 && !allCheckoutLines[i].queueEmpty()) {
+                            try {
+                                allCheckoutLines[i].deQueue();
+                            }
+                            catch(exception err)
+                            {
+                                cout << err.what();
+                            }
                         }
                     }
                     linkedcount++;
@@ -108,19 +107,16 @@ int main()
                 if (tempInfo.enterQTime == minutes) { //checking if customer needs to be moved to checkout line
                     int tempCardId = tempInfo.cartId;
                     int k = 0;
+                    queueNodeData tempQueueInfo, smallestLine = allCheckoutLines[k].peek(); //holding the current element of the queue's data and holding the data of the smallest checkout line
+                    int smallestLineIndex = 0; //holding the value of k at which the smallest line is
                     while (k < allCheckoutLines.size()) {
                         if (allCheckoutLines[k].queueEmpty()) {
                             allCheckoutLines[k].incrementIdleTime();
                         }
-                        queueNodeData tempQueueInfo, smallestLine = allCheckoutLines[0].peek(); //holding the current element of the queue's data and holding the data of the smallest checkout line
-                        int smallestLineIndex; //holding the value of k at which the smallest line is
                         tempQueueInfo = allCheckoutLines[k].peek();
                         if (tempQueueInfo.itemCount < smallestLine.itemCount) {
                             smallestLine = tempQueueInfo;
                             smallestLineIndex = k;
-                        }
-                        else {
-                            continue;
                         }
                         queueNodeData tempqueuedata; //creating a temp variable for the customer that needs to be added to a checkout line
                         tempqueuedata.timeAvailable = tempInfo.exitQTime;
@@ -130,18 +126,18 @@ int main()
                         k += 1;
                     }
                 }
-                else {
-                    continue;
-                }
                 //for loop through the main vector to check exitQTimes, making sure to hold data in a tempVar using peek to access info
                 queueNodeData tempVar; //holding data from checkoutlines
                 for (int i = 0; i < allCheckoutLines.size(); i++) {
                     tempVar = allCheckoutLines[i].peek();
-                    if (tempVar.timeAvailable == 0) {
-                        allCheckoutLines[i].deQueue();
-                    }
-                    else {
-                        continue;
+                    if (tempVar.timeAvailable == 0 && !allCheckoutLines[i].queueEmpty()) {
+                        try {
+                            allCheckoutLines[i].deQueue();
+                        }
+                        catch (exception err)
+                        {
+                            cout << err.what();
+                        }
                     }
                 }
                 linkedcount += 1;
@@ -149,9 +145,6 @@ int main()
             for (int i = 0; i < allCheckoutLines.size(); i++) {
                 if (!allCheckoutLines[i].queueEmpty()) {
                     allCheckoutLines[i].incrementOvertime();
-                }
-                else {
-                    continue;
                 }
             }
         }
