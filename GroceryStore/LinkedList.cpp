@@ -99,20 +99,24 @@ listType LinkedList::peek(int id)
 }
 bool LinkedList::has(int id)
 {
-	Node* tempNode = headPtr;
-	try
+	if (headPtr != nullptr)
 	{
+		Node* tempNode = headPtr;
 		while (tempNode != nullptr) {
-			if (tempNode != nullptr && tempNode->data.cartId == id) {
+			if (tempNode->data.cartId == id) {
 				return true;
 			}
-			tempNode = tempNode->nextPtr;
+			else if (tailPtr->data.cartId != tempNode->data.cartId)
+			{
+				tempNode = tempNode->nextPtr;
+			}
+			else
+			{
+				return false;
+			}
 		}
 	}
-	catch (...)
-	{
-		return false;
-	}
+	
 }
 /// <summary>
 /// Deletes the last element of the list
@@ -143,6 +147,7 @@ void LinkedList::delLastElement()
 		}
 		tempNode = tempNode->nextPtr;
 	}
+	count--;
 }
 /// <summary>
 /// deletes last element with the specified ID
@@ -150,43 +155,44 @@ void LinkedList::delLastElement()
 /// <param name="id">the id to delete</param>
 void LinkedList::delElement(int id)
 {
-	
-	if (headPtr->data.cartId == id && tailPtr->data.cartId == id)
+	Node* tempNode = headPtr;
+	if (headPtr != nullptr)
 	{
-		delete headPtr;
-		headPtr = nullptr;
-		tailPtr = nullptr;
-	}
-	else if (headPtr->data.cartId == id)
-	{
-		Node* tempNode = headPtr->nextPtr;
-		delete headPtr;
-		headPtr = tempNode;
+		if (headPtr->data.cartId == id);
+		{
+			if (headPtr->nextPtr != nullptr)
+			{
+				tempNode = headPtr->nextPtr;
+				delete headPtr;
+				headPtr = tempNode;
+				count--;
+				tempNode = nullptr;
+			}
+			else
+			{
+				delete headPtr;
+				headPtr = nullptr;
+				tailPtr = nullptr;
+				tempNode = nullptr;
+			}
+		}
 	}
 	else
 	{
-		Node* tempNode = headPtr;
-		while (tempNode->nextPtr != nullptr) {
+		while (tempNode != nullptr && tempNode->nextPtr != nullptr) {
 			if (tempNode->nextPtr->data.cartId == id) {
-				if (tempNode == headPtr)
-				{
-					headPtr = tempNode->nextPtr;
-				}
-				if (tempNode->nextPtr == tailPtr)
-				{
-					tailPtr = tempNode;
-				}
 				Node* delNode = tempNode->nextPtr;
 				tempNode->nextPtr = tempNode->nextPtr->nextPtr;
 				delete delNode;
-				delNode = nullptr;
 				count--;
-				return;
+				delNode = nullptr;
 				break;
 			}
 			tempNode = tempNode->nextPtr;
 		}
 	}
+	
+	
 }
 
 /// <summary>
