@@ -6,7 +6,6 @@
 
 int items() {
     int numItems = 0;
-    srand(time(0));
     int randNum = rand() % 100 + 1;
     if (randNum <= 40) {
         numItems = rand() % 11;

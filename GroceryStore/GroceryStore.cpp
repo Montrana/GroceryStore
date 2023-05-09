@@ -26,7 +26,7 @@ int main()
     LinkedList totalCustomersInStore;
     vector<int> cartIdsInStore;
     int minutes = 0;
-    while (!(minutes > 720 && !ischeckoutempty(allCheckoutLines))) {
+    while (minutes < 720 || !ischeckoutempty(allCheckoutLines)) {
         if (minutes < 720) {
             int customers;
             
@@ -44,34 +44,26 @@ int main()
                 listType tempInfo; //this is so we can access the information from the linkedlist elements, and use them to check enterQ times
                 //while (linkedcount <= totalCustomersInStore.listCount()) 
                 for(int j = 0; j < cartIdsInStore.size(); j++){
-                    try
+                    if (totalCustomersInStore.has(cartIdsInStore[j]))
                     {
                         tempInfo = totalCustomersInStore.peek(cartIdsInStore[j]); //storing info from certain element in linked list starting with 1,2,..etc.
-                        
-                    }
-                    catch(exception err)
-                    {
-                        //cout << err.what();
-                    }
-                    catch (...)
-                    {
-                        cout << "we ran into an issue lol.";
-                    }
-                    if (tempInfo.enterQTime == minutes) { //checking if customer needs to be moved to checkout line
-                        int tempCardId = tempInfo.cartId;
-                        int smallestLine = 0;
-                        for (int k = 0; k < allCheckoutLines.size(); k++)
-                        {
-                            if (allCheckoutLines[smallestLine].peek().itemCount > allCheckoutLines[k].peek().itemCount) {
-                                smallestLine = k;
+                        if (tempInfo.enterQTime == minutes) { //checking if customer needs to be moved to checkout line
+                            int tempCardId = tempInfo.cartId;
+                            int smallestLine = 0;
+                            for (int k = 0; k < allCheckoutLines.size(); k++)
+                            {
+                                if (allCheckoutLines[smallestLine].peek().itemCount > allCheckoutLines[k].peek().itemCount) {
+                                    smallestLine = k;
+                                }
                             }
+                            queueNodeData tempqueuedata; //creating a temp variable for the customer that needs to be added to a checkout line
+                            tempqueuedata.timeAvailable = tempInfo.exitQTime;
+                            tempqueuedata.itemCount = tempInfo.itemCount;
+                            allCheckoutLines[smallestLine].enQueue(tempqueuedata, tempCardId); //adding them to the predetermined shortest line.
+                            totalCustomersInStore.delElement(cartIdsInStore[j]);
                         }
-                        queueNodeData tempqueuedata; //creating a temp variable for the customer that needs to be added to a checkout line
-                        tempqueuedata.timeAvailable = tempInfo.exitQTime;
-                        tempqueuedata.itemCount = tempInfo.itemCount;
-                        allCheckoutLines[smallestLine].enQueue(tempqueuedata, tempCardId); //adding them to the predetermined shortest line.
-                        //totalCustomersInStore.delElement(cartIdsInStore[j]);
-                    }
+                    } 
+                    
                     //for loop through the main vector to check exitQTimes, making sure to hold data in a tempVar using peek to access info
                     queueNodeData tempVar; //holding data from checkoutlines
                     for (int i = 0; i < allCheckoutLines.size(); i++) {
@@ -99,33 +91,24 @@ int main()
         else {
             listType tempInfo; //this is so we can access the information from the linkedlist elements, and use them to check enterQ times
             for (int j = 0; j < cartIdsInStore.size(); j++) {
-                try
+                if (totalCustomersInStore.has(cartIdsInStore[j]))
                 {
                     tempInfo = totalCustomersInStore.peek(cartIdsInStore[j]); //storing info from certain element in linked list starting with 1,2,..etc.
-                    
-                }
-                catch (exception err)
-                {
-                    //cout << err.what();
-                }
-                catch (...)
-                {
-                    cout << "we ran into an issue lol.";
-                }
-                if (tempInfo.enterQTime == minutes) { //checking if customer needs to be moved to checkout line
-                    int tempCardId = tempInfo.cartId;
-                    int smallestLine = 0;
-                    for (int k = 0; k < allCheckoutLines.size(); k++)
-                    {
-                        if (allCheckoutLines[smallestLine].peek().itemCount > allCheckoutLines[k].peek().itemCount) {
-                            smallestLine = k;
+                    if (tempInfo.enterQTime == minutes) { //checking if customer needs to be moved to checkout line
+                        int tempCardId = tempInfo.cartId;
+                        int smallestLine = 0;
+                        for (int k = 0; k < allCheckoutLines.size(); k++)
+                        {
+                            if (allCheckoutLines[smallestLine].peek().itemCount > allCheckoutLines[k].peek().itemCount) {
+                                smallestLine = k;
+                            }
                         }
+                        queueNodeData tempqueuedata; //creating a temp variable for the customer that needs to be added to a checkout line
+                        tempqueuedata.timeAvailable = tempInfo.exitQTime;
+                        tempqueuedata.itemCount = tempInfo.itemCount;
+                        totalCustomersInStore.delElement(cartIdsInStore[j]);
+                        allCheckoutLines[smallestLine].enQueue(tempqueuedata, tempCardId); //adding them to the predetermined shortest line.
                     }
-                    queueNodeData tempqueuedata; //creating a temp variable for the customer that needs to be added to a checkout line
-                    tempqueuedata.timeAvailable = tempInfo.exitQTime;
-                    tempqueuedata.itemCount = tempInfo.itemCount;
-                    allCheckoutLines[smallestLine].enQueue(tempqueuedata, tempCardId); //adding them to the predetermined shortest line.
-                    //totalCustomersInStore.delElement(cartIdsInStore[j]);
                 }
                 //for loop through the main vector to check exitQTimes, making sure to hold data in a tempVar using peek to access info
                 queueNodeData tempVar; //holding data from checkoutlines
@@ -141,7 +124,6 @@ int main()
                         }
                     }
                 }
-
             }
             for (int i = 0; i < allCheckoutLines.size(); i++) {
                 if (!allCheckoutLines[i].queueEmpty()) {

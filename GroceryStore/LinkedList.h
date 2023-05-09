@@ -25,6 +25,7 @@ public:
 	void addElement(int id, int count, int enterTime, int exitTime);
 	listType peekBack();
 	listType peek(int id);
+	bool has(int id);
 	void delLastElement();
 	void delElement(int id);
 	void printList();

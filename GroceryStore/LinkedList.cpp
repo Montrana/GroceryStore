@@ -76,20 +76,43 @@ listType LinkedList::peekBack()
 listType LinkedList::peek(int id)
 {
 	Node* tempNode = headPtr;
-	while (tempNode != nullptr) {
-		try
-		{
-			if (tempNode->data.cartId == id) {
-				return tempNode->data;
+	if (has(id))
+	{
+		while (tempNode->nextPtr != nullptr) {
+			try
+			{
+				if (tempNode->data.cartId == id) {
+					return tempNode->data;
+				}
+				tempNode = tempNode->nextPtr;
+			}
+			catch (...)
+			{
+				cout << "we ran into an issue lol.";
+			}
+		}
+	}
+	else
+	{
+		return listType{};
+	}
+}
+bool LinkedList::has(int id)
+{
+	Node* tempNode = headPtr;
+	try
+	{
+		while (tempNode != nullptr) {
+			if (tempNode != nullptr && tempNode->data.cartId == id) {
+				return true;
 			}
 			tempNode = tempNode->nextPtr;
 		}
-		catch (...)
-		{
-			cout << "we ran into an issue lol.";
-		}
 	}
-	throw runtime_error("Could not find ID: " + id);
+	catch (...)
+	{
+		return false;
+	}
 }
 /// <summary>
 /// Deletes the last element of the list
@@ -143,7 +166,7 @@ void LinkedList::delElement(int id)
 	else
 	{
 		Node* tempNode = headPtr;
-		while (tempNode != nullptr) {
+		while (tempNode->nextPtr != nullptr) {
 			if (tempNode->nextPtr->data.cartId == id) {
 				if (tempNode == headPtr)
 				{
@@ -163,7 +186,6 @@ void LinkedList::delElement(int id)
 			}
 			tempNode = tempNode->nextPtr;
 		}
-		throw runtime_error("Could not find ID: " + id);
 	}
 }
 
