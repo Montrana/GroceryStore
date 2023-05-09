@@ -1,4 +1,12 @@
 // GroceryStore.cpp : This file contains the 'main' function. Program execution begins and ends there.
+// Partners: Montana Nicholson, Alyssa McMurry, Haley Nilsen
+// Date: April 18th 2023
+// Github link: https://github.com/Montrana/GroceryStore
+// Summary: This project simulates a grocery store using linked lists and queues
+// Primary Roles:
+//      Haley: Main code
+//      Montana: Linked Lists and some of main
+//      Alyssa: Queues and some of main
 //
 
 #include <iostream>
@@ -7,7 +15,6 @@
 #include "LinkedList.h"
 #include "Queue.h"
 #include "Simulation.h"
-#include "Customer.h"
 using namespace std;
 
 int main()
@@ -47,7 +54,7 @@ int main()
                     if (totalCustomersInStore.has(cartIdsInStore[j]))
                     {
                         tempInfo = totalCustomersInStore.peek(cartIdsInStore[j]); //storing info from certain element in linked list starting with 1,2,..etc.
-                        if (tempInfo.enterQTime >= minutes) { //checking if customer needs to be moved to checkout line
+                        if (tempInfo.enterQTime <= minutes) { //checking if customer needs to be moved to checkout line
                             int tempCardId = tempInfo.cartId;
                             int smallestLine = 0;
                             for (int k = 0; k < allCheckoutLines.size(); k++)
@@ -88,11 +95,12 @@ int main()
         }
         else {
             listType tempInfo; //this is so we can access the information from the linkedlist elements, and use them to check enterQ times
+            //while (linkedcount <= totalCustomersInStore.listCount()) 
             for (int j = 0; j < cartIdsInStore.size(); j++) {
                 if (totalCustomersInStore.has(cartIdsInStore[j]))
                 {
                     tempInfo = totalCustomersInStore.peek(cartIdsInStore[j]); //storing info from certain element in linked list starting with 1,2,..etc.
-                    if (tempInfo.enterQTime >= minutes) { //checking if customer needs to be moved to checkout line
+                    if (tempInfo.enterQTime <= minutes) { //checking if customer needs to be moved to checkout line
                         int tempCardId = tempInfo.cartId;
                         int smallestLine = 0;
                         for (int k = 0; k < allCheckoutLines.size(); k++)
@@ -109,6 +117,7 @@ int main()
                         cartIdsInStore.erase(cartIdsInStore.begin() + j);
                     }
                 }
+
                 //for loop through the main vector to check exitQTimes, making sure to hold data in a tempVar using peek to access info
                 queueNodeData tempVar; //holding data from checkoutlines
                 for (int i = 0; i < allCheckoutLines.size(); i++) {
@@ -119,7 +128,6 @@ int main()
                             allCheckoutLines[i].deQueue();
                         }
                     }
-                    
                 }
             }
             for (int i = 0; i < allCheckoutLines.size(); i++) {
@@ -135,14 +143,3 @@ int main()
         cout << endl;
     }
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
